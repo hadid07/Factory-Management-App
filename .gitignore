@@ -1,0 +1,4 @@
+factory-management/node_modules/
+factory-management/dist/
+node_modules/
+factory-management/.env

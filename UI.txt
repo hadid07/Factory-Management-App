@@ -1,0 +1,86 @@
+
+
+### ✅ **Core Modules to Build:**
+
+1. **Customer Management**
+
+   * Add/Edit/Delete customer
+   * View customer profile with:
+
+     * Total purchases
+     * Pending amount
+     * Payment history
+
+2. **Sales Entry**
+
+   * Form to add daily sales (date, product category, quantity, amount, customer)
+   * Option to mark sale as paid or pending (credit)
+
+3. **Expenses Entry**
+
+   * Add factory expenses (fuel, food, salary, bills, etc.)
+   * Add van trip expenses separately
+   * Filter expenses by date/month
+
+4. **Reports**
+
+   * Daily Summary:
+
+     * Total sales
+     * Sales by category
+     * Total expenses
+     * Profit
+   * Monthly Report:
+
+     * Sales by category
+     * Customer-wise outstanding
+     * Total income vs total expenses
+
+---
+
+### 🛠️ **Tech Stack & Structure:**
+
+* **Frontend:** React.js (with Tailwind CSS or Material UI)
+* **Backend:** Express.js + MongoDB
+* **Desktop Shell:** Electron.js
+* **Storage:** MongoDB (local instance since single machine)
+
+---
+
+### 🧩 **UI Layout Plan:**
+
+1. **Left Sidebar:**
+
+   * Dashboard
+   * Add Sale
+   * Add Expense
+   * Customers
+   * Reports
+   * Settings
+
+2. **Dashboard Page:**
+
+   * Today's Summary (Sales by category, expenses, profit)
+   * Quick buttons to add sale or expense
+
+3. **Add Sale Page:**
+
+   * Sale form: date, product, amount, customer
+   * Paid/Unpaid toggle
+   * Add multiple sales in one go (like a list)
+
+4. **Add Expense Page:**
+
+   * Expense form: category, amount, date, notes
+   * View today's total expenses
+
+5. **Customers Page:**
+
+   * Customer list with pending dues
+   * Clicking a customer shows full transaction history + payment form
+
+6. **Reports Page:**
+
+   * Select Date Range / Month
+   * Show summarized data (category-wise, total profit, etc.)
+
