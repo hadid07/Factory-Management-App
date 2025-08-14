@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Nav } from "react-bootstrap";
-import { House, People, Cart, Cash, BarChartFill, Box } from "react-bootstrap-icons";
+import { House, People, Cart, Cash, BarChartFill, Box, GeoAltFill, BoxFill, CartDashFill, CashStack, CartFill, PeopleFill, HouseFill } from "react-bootstrap-icons";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
@@ -9,12 +9,13 @@ export default function Sidebar() {
   const Navigate = useNavigate();
   const Location = useLocation();
   const menuItems = [
-    { key: "dashboard", icon: <House/>, label: "Dashboard",path: '/'},
-    { key: "customers", icon: <People />, label: "Customers" ,path:'/customers'},
-    { key: "sales", icon: <Cart />, label: "Sales", path:'/sales' },
+    { key: "dashboard", icon: <HouseFill/>, label: "Dashboard",path: '/'},
+    { key: "customers", icon: <PeopleFill />, label: "Customers" ,path:'/customers'},
+    { key: "sales", icon: <CartFill />, label: "Sales", path:'/sales' },
     { key: "expenses", icon: <Cash />, label: "Expenses",path: '/expenses' },
-    { key: "settings", icon: <Box />, label: "Items",path: '/items' },
-    { key: "logout", icon: <BarChartFill />, label: "Reports",path: '/reports' },
+    { key: "items", icon: <BoxFill />, label: "Items",path: '/items' },
+    { key: "reports", icon: <BarChartFill />, label: "Reports",path: '/reports' },
+    { key: "areas", icon: <GeoAltFill />, label: "Areas",path: '/areas' }
   ];
 
   return (

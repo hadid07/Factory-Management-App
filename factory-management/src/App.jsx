@@ -9,6 +9,7 @@ import Expenses from './pages/Expenses';
 import Customers from './pages/Customers';
 import Items from './pages/Items';
 import Reports from './pages/Reports';
+import Areas from './pages/Areas';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -23,6 +24,7 @@ function App() {
         <Route path = '/customers' element={<Customers/>}/>
         <Route path = '/items' element={<Items/>}/>
         <Route path = '/reports' element={<Reports/>}/>
+        <Route path = '/areas' element={<Areas/>}/>
       </Routes>
     </Router>
    </>
