@@ -10,6 +10,12 @@ db.prepare(`
     name TEXT NOT NULL
   )
 `).run();
+db.prepare(` CREATE TABLE IF NOT EXISTS customers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    area TEXT NOT NULL,
+    money INTEGER NOT NULL DEFAULT 0)`).run();
+
 
 console.log(`Database initialized at ${dbPath}`);
 
