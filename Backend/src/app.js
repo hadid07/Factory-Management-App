@@ -1,7 +1,15 @@
 const express = require('express');
 const app = express();
-const db = require('./db/dbcon');
+const db = require("./db/dbcon");
 const router = require('./routers/MainRouters');
+const cors = require('cors');
+
+app.use(cors({
+      origin: 'http://localhost:5173',
+      methods: ['GET', 'POST', 'PUT', 'DELETE'],
+      allowedHeaders: ['Content-Type'],
+      credentials: true 
+    }));
 
 
 app.use(express.json());
