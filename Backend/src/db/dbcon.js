@@ -16,6 +16,10 @@ db.prepare(` CREATE TABLE IF NOT EXISTS customers (
     area TEXT NOT NULL,
     money INTEGER NOT NULL DEFAULT 0)`).run();
 
+db.prepare(`CREATE TABLE IF NOT EXISTS items (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL
+  )`).run();
 
 console.log(`Database initialized at ${dbPath}`);
 

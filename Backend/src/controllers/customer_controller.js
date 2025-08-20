@@ -39,3 +39,19 @@ module.exports.addCustomer = async(req,res) => {
         res.status(500).json({ status:false, message: 'Internal server error' });
     }
   }
+  module.exports.deleteCustomer = async(req,res)=>{
+    const { name, area } = req.body;
+    if (!name || !area) {
+        return res.status(400).json({ message: 'Name and area are required' });
+    }
+    try {
+        const result = await CustomerdbHelper.deleteCustomer(name, area);
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ status:false, message: 'Customer not found' });
+        }
+        res.status(200).json({ status:true, message: 'Customer deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting customer:', error);
+        res.status(500).json({ status:false, message: 'Internal server error' });
+    }
+  } 

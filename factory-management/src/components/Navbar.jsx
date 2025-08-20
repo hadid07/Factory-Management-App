@@ -18,7 +18,7 @@ const formattedDateTime = `${dayName} ${dateTime.toLocaleString('en-IN', {
 
   return (
     <div className="  navbar  d-flex justify-content-between px-4 py-2" style={{backgroundColor: "#343a40",height: "60px"}}>
-      <h3 className="text-primary m-0 " style={{fontFamily:'monospace'}}>Factory Khata</h3>
+      <h3 className="text-primary m-0 " style={{fontFamily:'monospace'}}>Aoun Soap Factory</h3>
       <div className="text-light">{formattedDateTime}</div>
     </div>
   );

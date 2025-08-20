@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 // const db = require('../db/dbcon');
 const areaController = require('../controllers/area_controller');
-const CustomerController = require('../controllers/customer_controller')
+const CustomerController = require('../controllers/customer_controller');
+const ItemController = require('../controllers/Item_controller');
 
 router.get('/',(req,res)=>{
     res.json({
@@ -15,4 +16,7 @@ router.delete('/delete-area/:areaName',areaController.deleteArea);
 router.post('/add_customer',CustomerController.addCustomer);
 router.get('/get_all_customers',CustomerController.getAllCustomers);
 router.get('/get_customers_by_area/:areaName',CustomerController.getCustomerbyArea);
+router.post('/delete_customer',CustomerController.deleteCustomer);
+router.post('/add_item',ItemController.addItem);
+router.get('/get_items',ItemController.getItems);
 module.exports = router;

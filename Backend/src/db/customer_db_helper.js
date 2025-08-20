@@ -13,6 +13,11 @@ const CustomerdbHelper ={
   getAllCustomers : ()=>{
     const stmt = db.prepare(`SELECT * FROM customers`);
     return stmt.all(); // Returns all customers
+  },
+  deleteCustomer: (name, area) => {
+    const stmt = db.prepare(`DELETE FROM customers WHERE name = ? AND area = ?`);
+    const result = stmt.run(name, area); // Executes the delete
+    return result; // Returns the result of the delete operation
   }
 }
 
