@@ -178,14 +178,16 @@ const Customers = () => {
     setShowMessage(true);
     // setTotalSale('');
     setSaleAmounts([])
+    setDate(new Date().toISOString().split("T")[0]);
+    setCredit(0);
   };
 
   const handleSaleClose =  ()=>{
      setAddSale(false);          // close modal
-  setDate("");                // reset date
+  setDate(new Date().toISOString().split("T")[0]);                // reset date
   setDescription("");         // reset description
   setSaleAmounts([]);         // reset sale amounts
-  setCredit("");              // reset credit
+  setCredit(0);              // reset credit
   setTotalSale(0);  
 
 
