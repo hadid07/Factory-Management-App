@@ -21,6 +21,28 @@ db.prepare(`CREATE TABLE IF NOT EXISTS items (
     name TEXT NOT NULL
   )`).run();
 
+db.prepare(`
+  CREATE TABLE IF NOT EXISTS sales (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date TEXT DEFAULT (DATE('now')),
+    customername TEXT NOT NULL,
+    customerarea TEXT NOT NULL,
+    description TEXT,
+    saleamount INTEGER NOT NULL,
+    credit INTEGER NOT NULL
+  )
+`).run();
+ 
+db.prepare(`
+  CREATE TABLE IF NOT EXISTS items_sales_expenses (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  item TEXT NOT NULL,
+  type TEXT NOT NULL,
+  date TEXT DEFAULT (DATE('now')),
+  amount INTEGER DEFAULT 0
+  )
+  `).run();
+
 console.log(`Database initialized at ${dbPath}`);
 
 module.exports = db;
