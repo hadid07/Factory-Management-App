@@ -27,6 +27,11 @@ const SalesDbHelper = {
             console.error("Error inserting sale:", err);
             return { success: false, error: err.message };
         }
+    },
+    
+    get_all_sales : ()=>{
+        const stmt = db.prepare(`SELECT * FROM sales`);
+        return stmt.all();
     }
 };
 

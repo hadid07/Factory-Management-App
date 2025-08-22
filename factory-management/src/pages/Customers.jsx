@@ -30,8 +30,18 @@ const Customers = () => {
   const [saleAmounts, setSaleAmounts] = useState([]);
   const [totalSale, setTotalSale] = useState(0);
   const [credit, setCredit] = useState("");
-  const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
   const [customerData, setCustomerData] = useState({ name: "", area: "" });
+
+  const getLocalDateString = () => {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0'); // months start at 0
+  const dd = String(today.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+};
+
+const [date, setDate] = useState(getLocalDateString());
+
 
   // Fetch areas, customers, items
   useEffect(() => {
@@ -54,6 +64,7 @@ const Customers = () => {
         withCredentials: true,
       });
       if (res.data.status) {
+        // console.log(res.data.items)
         setItems(res.data.items);
       }
     };
@@ -178,7 +189,7 @@ const Customers = () => {
     setShowMessage(true);
     // setTotalSale('');
     setSaleAmounts([])
-    setDate(new Date().toISOString().split("T")[0]);
+    setDate(getLocalDateString());
     setCredit(0);
   };
 
@@ -258,7 +269,7 @@ const handleSaleAmountChange = (name, value) => {
                 <Form.Check
                   type="radio"
                   label={area.name}
-                  key={area._id}
+                  key={area.id}
                   name="area"
                   value={area.name}
                   checked={selectedArea === area.name}
@@ -441,8 +452,8 @@ const handleSaleAmountChange = (name, value) => {
               />
             </Form.Group>
 
-            {items.map((item,index) => (
-              <Form.Group className="mb-3" key={index}>
+            {items.map((item) => (
+              <Form.Group className="mb-3" key={item.id}>
                 <Form.Label>{`${item.name} Sale Amount`}</Form.Label>
                 <Form.Control
                   type="number"

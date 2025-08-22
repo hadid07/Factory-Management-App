@@ -21,4 +21,5 @@ router.post('/delete_customer',CustomerController.deleteCustomer);
 router.post('/add_item',ItemController.addItem);
 router.get('/get_items',ItemController.getItems);
 router.post('/add_sale',SalesController.addSale);
+router.get('/get_all_sales',SalesController.get_all_sales);
 module.exports = router;

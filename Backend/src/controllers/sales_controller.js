@@ -28,3 +28,25 @@ module.exports.addSale = async(req,res)=>{
     }
 
 }
+module.exports.get_all_sales = async(req,res)=>{
+    try{
+        const sales = await SalesDbHelper.get_all_sales();
+        if(sales.length==0){
+            return res.json({
+                status:false,
+                message:'no sales to show '
+            })
+        }
+        res.json({
+            status:true,
+            sales:sales,
+            message:'Sales fetched successfully'
+        })
+    }catch(err){
+        return res.json({
+            status:false,
+            message:'could not get sales',
+            
+        })
+    }
+}
