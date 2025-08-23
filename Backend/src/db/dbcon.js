@@ -32,6 +32,19 @@ db.prepare(`
     credit INTEGER NOT NULL
   )
 `).run();
+
+db.prepare(`
+  CREATE TABLE IF NOT EXISTS expenses (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  date TEXT DEFAULT (DATE('now')),
+  customername TEXT,
+  customerarea TEXT,
+  description TEXT ,
+  expenseamount INTEGER NOT NULL,
+  debit INTEGER NOT NULL DEFAULT (0),
+  expensetype TEXT NOT NULL
+  )
+  `).run();
  
 db.prepare(`
   CREATE TABLE IF NOT EXISTS items_sales_expenses (
