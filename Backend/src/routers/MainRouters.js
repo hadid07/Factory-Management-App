@@ -24,4 +24,5 @@ router.get('/get_items',ItemController.getItems);
 router.post('/add_sale',SalesController.addSale);
 router.get('/get_all_sales',SalesController.get_all_sales);
 router.post('/add_expense',ExpenseController.add_expense);
+router.get('/get_all_expenses',ExpenseController.show_all_expenses);
 module.exports = router;

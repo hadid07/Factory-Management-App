@@ -10,6 +10,7 @@ import {
 } from "react-bootstrap-icons";
 import { Modal, Form, Button } from "react-bootstrap";
 import axios from "axios";
+import ExpenseModal from "../components/ExpenseModal";
 
 const Customers = () => {
   const [showAddCustomer, setShowAddCustomer] = useState(false);
@@ -31,6 +32,7 @@ const Customers = () => {
   const [totalSale, setTotalSale] = useState(0);
   const [credit, setCredit] = useState("");
   const [customerData, setCustomerData] = useState({ name: "", area: "" });
+  const [showExpenseModal, setShowExpenseModal] = useState(false);
 
   const getLocalDateString = () => {
   const today = new Date();
@@ -177,7 +179,7 @@ const [date, setDate] = useState(getLocalDateString());
       date,
       type: "sale",
     };
-      console.log(payload);
+      // console.log(payload);
       const res = await axios.post("http://localhost:3000/add_sale", payload, {
         withCredentials: true,
       });
@@ -195,7 +197,7 @@ const [date, setDate] = useState(getLocalDateString());
 
   const handleSaleClose =  ()=>{
      setAddSale(false);          // close modal
-  setDate(new Date().toISOString().split("T")[0]);                // reset date
+  setDate(getLocalDateString());                // reset date
   setDescription("");         // reset description
   setSaleAmounts([]);         // reset sale amounts
   setCredit(0);              // reset credit
@@ -220,9 +222,20 @@ const handleSaleAmountChange = (name, value) => {
 };
 
 
+const handleClickAddExpense = async(name,area)=>{
+  setShowExpenseModal(true);
+  setCustomerName(name);
+  setCustomerArea(area);
+  
+}
+const hide = ()=>{
+  setShowExpenseModal(false);
+  setCustomerName('');
+  setCustomerArea('');
+  setDate(getLocalDateString());
+}
 
-
-  const filteredCustomers = customers.filter(
+const filteredCustomers = customers.filter(
     (c) =>
       c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       c.area.toLowerCase().includes(searchTerm.toLowerCase())
@@ -307,7 +320,7 @@ const handleSaleAmountChange = (name, value) => {
                       >
                         <CartPlusFill />
                       </td>
-                      <td className="text-center">
+                      <td className="text-center" onClick={() => handleClickAddExpense(c.name, c.area)}>
                         <CashStack />
                       </td>
                       <td className="text-center">
@@ -490,6 +503,9 @@ const handleSaleAmountChange = (name, value) => {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      <ExpenseModal show={showExpenseModal} 
+      hide={hide} customerName={customerName} customerArea={customerArea} date={date} items = {items}/>
     </>
   );
 };

@@ -14,5 +14,17 @@ const ExpenseDbHelper = {
             })
         }
 
+    },
+    show_all_expenses : async()=>{
+        try{
+            const stmt = db.prepare(`SELECT * FROM expenses ORDER BY date DESC`);
+            const expenses = stmt.all();
+            return expenses;
+        }catch(err){
+            console.log(err);
+            return [];
+        }
     }
 }
+
+module.exports = ExpenseDbHelper;
