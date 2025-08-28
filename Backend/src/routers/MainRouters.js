@@ -7,11 +7,6 @@ const ItemController = require('../controllers/Item_controller');
 const SalesController = require('../controllers/sales_controller');
 const ExpenseController = require('../controllers/expense_controller');
 
-router.get('/',(req,res)=>{
-    res.json({
-        message:'Hello from Router'
-    })
-})
 router.post('/add-area',areaController.Add_Area);
 router.get('/get_areas',areaController.get_areas);
 router.delete('/delete-area/:areaName',areaController.deleteArea);
@@ -25,4 +20,6 @@ router.post('/add_sale',SalesController.addSale);
 router.get('/get_all_sales',SalesController.get_all_sales);
 router.post('/add_expense',ExpenseController.add_expense);
 router.get('/get_all_expenses',ExpenseController.show_all_expenses);
+router.post('/delete_sale',SalesController.delete_sale);
+router.post('/delete_expense',ExpenseController.delete_expense);
 module.exports = router;

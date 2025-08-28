@@ -24,6 +24,11 @@ const ExpenseDbHelper = {
             console.log(err);
             return [];
         }
+    },
+    delete_expense : (date,id)=>{
+        const stmt = db.prepare(`DELETE FROM expenses WHERE date = ? AND id = ?`);
+        const info = stmt.run(date,id );
+        return info;
     }
 }
 

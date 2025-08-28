@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import D_Card_Primary from '../components/D_Card_Primary';
-import { CartPlus,CashStack } from 'react-bootstrap-icons';
+import { ArrowDownCircle, ArrowUpCircle, CartPlus,CashStack } from 'react-bootstrap-icons';
 
 // Chart.js imports and registration
 import {
@@ -164,14 +164,19 @@ const Dashboard = () => {
             </div>
           </div>
           <div className="w-50  d-flex flex-row align-items-center justify-content-around p-3 mt-4 ">
-            <button className='btn border border-primary btn-primary shadow bg-opacity-75'>
-              <CartPlus size={20} className=" m-2 text-light" />
-              <span className="text-light">Add Sales</span>
-            </button>
-            <button className='btn border border-primary btn-primary shadow bg-opacity-75'>
-              <CashStack size={20} className="m-2 text-light" />
-              <span className="text-light">Add Expenses</span>
-            </button>
+            <div className='border border-success rounded shadow p-2 d--flex'>
+              <ArrowUpCircle size={30} className="text-success" />
+              <span className='text-center text-success mx-1'>
+                Total Credit :
+                </span>
+            </div>
+            {/* <div className="w-50  d-flex flex-row align-items-center justify-content-around p-3 mt-4 "> */}
+            <div className='border border-success rounded shadow p-2 d--flex'>
+              <ArrowDownCircle size={30} className="text-danger" />
+              <span className='text-center text-danger mx-1'>
+                Total Debit :
+                </span>
+            </div>
           </div>
         </div>
       </div>

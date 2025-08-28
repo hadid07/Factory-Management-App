@@ -14,7 +14,8 @@ module.exports.addSale = async(req,res)=>{
       } = req.body;
     try{
         const sale = await SalesDbHelper.add_sale(date,customerName,customerArea,description,totalSale,credit);
-        const ItemSE = await itemSaleExpenseDbHelper.addSaleExpense(sales,date,type);
+        const ES_id = sale.lastInsertRowid;
+        const ItemSE = await itemSaleExpenseDbHelper.addSaleExpense(sales,date,type, ES_id);
         res.json({
             status:true,
             message:'Sale Added Successfully'
@@ -49,4 +50,26 @@ module.exports.get_all_sales = async(req,res)=>{
             
         })
     }
+}
+
+module.exports.delete_sale = async(req,res)=>{
+    const  {
+        date,
+        id
+      } = req.body;
+    try{
+        const sale = await SalesDbHelper.detete_sale(date,id);
+        const ItemSE = await itemSaleExpenseDbHelper.deleteItemSaleExpense(date,id,'sale');
+        res.json({
+            status:true,
+            message:'Sale Deleted Successfully'
+        })
+    }catch(err){
+        console.log(err);
+        res.json({
+            status:false,
+            message:'could not delete sale'
+        })
+    }
+
 }

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import Sidebar from '../components/Sidebar'
 import Navbar from '../components/Navbar'
-import { CartPlus } from 'react-bootstrap-icons'
+import { CartPlus, TrashFill } from 'react-bootstrap-icons'
 import axios, { Axios } from 'axios'
 import { Modal, Form, Button } from 'react-bootstrap';
 
@@ -26,6 +26,8 @@ const Sales = () => {
   const dd = String(today.getDate()).padStart(2, '0');
   const localDate = `${yyyy}-${mm}-${dd}`;
   const [date, setDate] = useState(localDate);
+  const [showDeleteModal,setShowDeleteModal] = useState(false);
+  const [deleteSale,setDeleteSale] = useState(null);
 
   useEffect(() => {
     const getSales = async () => {
@@ -133,10 +135,48 @@ const AddSale = async () => {
   const filteredSales = sales.filter((sale) => {
     const localSaleDate = new Date(sale.date).toLocaleDateString('en-CA'); // YYYY-MM-DD format
     return localSaleDate === date;
-  });
+  }
+);
 
 
+const handleDelSale = (sale) => {
+  setDeleteSale(sale);
+  setShowDeleteModal(true);
+  
+} 
 
+const confirmDelete = async () => {
+  try {
+    const result = await axios.post(  
+      'http://localhost:3000/delete_sale',
+      deleteSale,
+      { withCredentials: true }
+    )
+    if (result.data.status) {
+      setMessage(result.data.message)
+      setShowMessage(true)
+
+      // refresh list
+      const res = await axios.get('http://localhost:3000/get_all_sales', {
+        withCredentials: true,
+      })
+      if (res.data.status) {
+        setSales(res.data.sales)
+      }
+    } else {
+      setMessage('Could not delete Sale')
+      setShowMessage(true)
+    }
+  } catch (err) {
+    console.log(err)
+    setMessage('Error deleting sale')
+    setShowMessage(true)
+  }
+  setShowDeleteModal(false)
+  setDeleteSale(null)
+}
+
+  
   return (
     <>
       <Navbar />
@@ -167,6 +207,7 @@ const AddSale = async () => {
                     <td>Sale Amount</td>
                     <td>Credit</td>
                     <td>Remaining</td>
+                    <td>Delete</td>
                   </tr>
                 </thead>
                 <tbody>
@@ -180,6 +221,7 @@ const AddSale = async () => {
                         <td>{sale.saleamount}</td>
                         <td>{sale.credit}</td>
                         <td>{sale.saleamount - sale.credit}</td>
+                        <td onClick={()=>handleDelSale(sale)}><TrashFill/></td>
 
                       </tr>
                     ))
@@ -282,6 +324,31 @@ const AddSale = async () => {
                 </button>
               </Modal.Footer>
             </Modal>
+
+            {/* Delete Confirm Modal */}
+                  <Modal
+                    show={showDeleteModal}
+                    onHide={() => setShowDeleteModal(false)}
+                    centered
+                  >
+                    <Modal.Header closeButton>
+                      <Modal.Title>Confirm Deletion</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                      Are you sure you want to delete this expense?
+                    </Modal.Body>
+                    <Modal.Footer>
+                      <button
+                        className="btn btn-secondary"
+                        onClick={() => setShowDeleteModal(false)}
+                      >
+                        Cancel
+                      </button>
+                      <button className="btn btn-danger" onClick={confirmDelete}>
+                        Delete
+                      </button>
+                    </Modal.Footer>
+                  </Modal>
     </>
   )
 }

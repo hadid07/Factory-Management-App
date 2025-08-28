@@ -21,6 +21,8 @@ db.prepare(`CREATE TABLE IF NOT EXISTS items (
     name TEXT NOT NULL
   )`).run();
 
+// db.prepare(`DROP TABLE IF EXISTS expenses`).run();
+
 db.prepare(`
   CREATE TABLE IF NOT EXISTS sales (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -46,15 +48,18 @@ db.prepare(`
   )
   `).run();
  
+
 db.prepare(`
   CREATE TABLE IF NOT EXISTS items_sales_expenses (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
+  ES_id INTEGER,
   item TEXT NOT NULL,
   type TEXT NOT NULL,
   date TEXT DEFAULT (DATE('now')),
   amount INTEGER DEFAULT 0
   )
-  `).run();
+`).run();
+
 
 console.log(`Database initialized at ${dbPath}`);
 

@@ -32,7 +32,13 @@ const SalesDbHelper = {
     get_all_sales : ()=>{
         const stmt = db.prepare(`SELECT * FROM sales`);
         return stmt.all();
+    },
+    detete_sale : ((date, id)=>{
+        const stmt = db.prepare(`DELETE FROM sales WHERE date = ? AND id = ?`);
+        const info = stmt.run(date,id);
+        return info;
     }
+)
 };
 
 module.exports = SalesDbHelper;
