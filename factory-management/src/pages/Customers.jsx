@@ -27,12 +27,13 @@ const Customers = () => {
   const [addSale, setAddSale] = useState(false);
   const [customerName, setCustomerName] = useState("");
   const [customerArea, setCustomerArea] = useState("");
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState("Regular");
   const [saleAmounts, setSaleAmounts] = useState([]);
   const [totalSale, setTotalSale] = useState(0);
   const [credit, setCredit] = useState("");
   const [customerData, setCustomerData] = useState({ name: "", area: "" });
   const [showExpenseModal, setShowExpenseModal] = useState(false);
+  const [customerID,setCustomerID] = useState(null);
 
   const getLocalDateString = () => {
   const today = new Date();
@@ -159,9 +160,10 @@ const [date, setDate] = useState(getLocalDateString());
     setShowMessage(true);
   };
 
-  const handleClickAddSale = (name, area) => {
+  const handleClickAddSale = (name, area, id) => {
     setCustomerName(name);
     setCustomerArea(area);
+    setCustomerID(id)
     setAddSale(true);
   };
 
@@ -178,6 +180,7 @@ const [date, setDate] = useState(getLocalDateString());
       credit: Number(credit) || 0,
       date,
       type: "sale",
+      customerID
     };
       // console.log(payload);
       const res = await axios.post("http://localhost:3000/add_sale", payload, {
@@ -192,7 +195,7 @@ const [date, setDate] = useState(getLocalDateString());
     // setTotalSale('');
     setSaleAmounts([])
     setDate(getLocalDateString());
-    setCredit(0);
+    setCredit('');
   };
 
   const handleSaleClose =  ()=>{
@@ -222,10 +225,11 @@ const handleSaleAmountChange = (name, value) => {
 };
 
 
-const handleClickAddExpense = async(name,area)=>{
+const handleClickAddExpense = async(name,area,id)=>{
   setShowExpenseModal(true);
   setCustomerName(name);
   setCustomerArea(area);
+  setCustomerID(id)
   
 }
 const hide = ()=>{
@@ -316,11 +320,11 @@ const filteredCustomers = customers.filter(
                       <td>{c.money}</td>
                       <td
                         className="text-center"
-                        onClick={() => handleClickAddSale(c.name, c.area)}
+                        onClick={() => handleClickAddSale(c.name, c.area,c.id)}
                       >
                         <CartPlusFill />
                       </td>
-                      <td className="text-center" onClick={() => handleClickAddExpense(c.name, c.area)}>
+                      <td className="text-center" onClick={() => handleClickAddExpense(c.name, c.area, c.id)}>
                         <CashStack />
                       </td>
                       <td className="text-center">
@@ -505,7 +509,7 @@ const filteredCustomers = customers.filter(
       </Modal>
 
       <ExpenseModal show={showExpenseModal} 
-      hide={hide} customerName={customerName} customerArea={customerArea} date={date} items = {items}/>
+      hide={hide} customerID = {customerID} customerName={customerName} customerArea={customerArea} date={date} items = {items}/>
     </>
   );
 };

@@ -22,14 +22,16 @@ const ExpenseModal = (props) => {
   const [itemName,setItemName] = useState('')
   const [message, setMessage] = useState('');
   const [showMessage, setShowMessage] = useState(false);
+  const [customerID,setCustomerID] = useState(null);
   // Sync props with state when modal opens
   useEffect(() => {
     setItems(props.items)
     // console.log(props.items);
     if (props.customerName) setCustomerName(props.customerName);
     if (props.customerArea) setCustomerArea(props.customerArea);
+    if (props.customerID) setCustomerID(props.customerID);
     // if (props.date) setDate(props.date);
-  }, [props.customerName, props.customerArea, props.date, props.items]);
+  }, [props.customerName, props.customerArea, props.date, props.items,props.customerID]);
 
 const payload = { 
         customerName :customerName,
@@ -39,7 +41,8 @@ const payload = {
         totalExpense :expenseAmount,
         debit :debit,
         date :date,
-        expensetype: expenseType
+        expensetype: expenseType,
+        customerid :customerID
       }
 
       const SaveExpense = async()=>{

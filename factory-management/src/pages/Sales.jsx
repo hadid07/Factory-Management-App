@@ -13,9 +13,9 @@ const Sales = () => {
   const [sales, setSales] = useState([]);
   const [addSale, setAddSale] = useState(false);
   const [items, setItems] = useState([]);
-  const [customerName, setCustomerName] = useState("");
+  const [customerName, setCustomerName] = useState("CashCustomer");
   const [customerArea, setCustomerArea] = useState("");
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState("Regular");
   const [saleAmounts, setSaleAmounts] = useState([]);
   const [totalSale, setTotalSale] = useState(0);
   const [credit, setCredit] = useState('');
@@ -130,7 +130,7 @@ const AddSale = async () => {
     // setTotalSale('');
     setSaleAmounts([])
     setDate(getLocalDateString());
-    setCredit(0);
+    setCredit('');
   };
   const filteredSales = sales.filter((sale) => {
     const localSaleDate = new Date(sale.date).toLocaleDateString('en-CA'); // YYYY-MM-DD format
@@ -253,7 +253,7 @@ const confirmDelete = async () => {
             <div className="d-flex">
               <Form.Group className="mb-3 me-2" style={{ flex: 1 }}>
                 <Form.Label>Customer Name</Form.Label>
-                <Form.Control type="text" value={customerName} onChange={(e) => setCustomerName(e.target.value)} />
+                <Form.Control type="text" value={customerName} readOnly />
               </Form.Group>
               <Form.Group className="mb-3" style={{ flex: 1 }}>
                 <Form.Label>Customer Area</Form.Label>

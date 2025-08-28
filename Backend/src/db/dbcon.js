@@ -21,7 +21,7 @@ db.prepare(`CREATE TABLE IF NOT EXISTS items (
     name TEXT NOT NULL
   )`).run();
 
-// db.prepare(`DROP TABLE IF EXISTS expenses`).run();
+// db.prepare(`DROP TABLE IF EXISTS sales`).run();
 
 db.prepare(`
   CREATE TABLE IF NOT EXISTS sales (
@@ -29,6 +29,7 @@ db.prepare(`
     date TEXT DEFAULT (DATE('now')),
     customername TEXT NOT NULL,
     customerarea TEXT NOT NULL,
+    customerid INTEGER,
     description TEXT,
     saleamount INTEGER NOT NULL,
     credit INTEGER NOT NULL
@@ -41,6 +42,7 @@ db.prepare(`
   date TEXT DEFAULT (DATE('now')),
   customername TEXT,
   customerarea TEXT,
+  customerid INTEGER,
   description TEXT ,
   expenseamount INTEGER NOT NULL,
   debit INTEGER NOT NULL DEFAULT (0),
@@ -60,6 +62,20 @@ db.prepare(`
   )
 `).run();
 
+db.prepare(`
+  CREATE TABLE IF NOT EXISTS transactions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    date TEXT DEFAULT (DATE('now')),
+    customername TEXT NOT NULL,
+    customerarea TEXT NOT NULL,
+    customerID INTEGER NOT NULL,
+    ES_id INTEGER,
+    description TEXT,
+    amount INTEGER NOT NULL,
+    transactiontype TEXT NOT NULL,
+    debit INTEGER NOT NULL DEFAULT 0,
+    credit INTEGER NOT NULL DEFAULT 0)
+    `).run()
 
 console.log(`Database initialized at ${dbPath}`);
 

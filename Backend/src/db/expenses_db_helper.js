@@ -1,11 +1,11 @@
 const db = require('../db/dbcon');
 
 const ExpenseDbHelper = {
-    add_expense : async(date, customername, customerarea, description,expenseamount, debit, expensetype)=>{
+    add_expense : async(date, customername, customerarea, description,expenseamount, debit, expensetype, customerid)=>{
         try{
 
-            const stmt = db.prepare(`INSERT INTO expenses (date, customername, customerarea, description, expenseamount, debit, expensetype) VALUES(?,?,?,?,?,?,?)`);
-            const info = stmt.run(date,customername,customerarea,description,expenseamount,debit,expensetype)
+            const stmt = db.prepare(`INSERT INTO expenses (date, customername, customerarea, description, expenseamount, debit, expensetype, customerid) VALUES(?,?,?,?,?,?,?,?)`);
+            const info = stmt.run(date,customername,customerarea,description,expenseamount,debit,expensetype,customerid);
             return { success: true, lastInsertRowid: info.lastInsertRowid };
         }catch(err){
             return({

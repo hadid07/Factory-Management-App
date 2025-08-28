@@ -1,7 +1,7 @@
 const db = require('../db/dbcon');
 
 const SalesDbHelper = {
-    add_sale: async (date, customername, customerarea, description,saleamount, credit) => {
+    add_sale: async (date, customername, customerarea, description,saleamount, credit, customerid) => {
         try {
             let stmt;
             let info;
@@ -9,10 +9,10 @@ const SalesDbHelper = {
             if (date) {
                 // If user provides a date (from frontend input)
                 stmt = db.prepare(`
-                    INSERT INTO sales (date, customername, customerarea, description,saleamount, credit)
-                    VALUES (?, ?, ?, ?, ?,?)
+                    INSERT INTO sales (date, customername, customerarea, description,saleamount, credit, customerid)
+                    VALUES (?, ?, ?, ?, ?, ?, ?)
                 `);
-                info = stmt.run(date, customername, customerarea, description , saleamount, credit);
+                info = stmt.run(date, customername, customerarea, description , saleamount, credit,customerid);
             } else {
                 // If no date provided → let SQLite use default DATE('now')
                 stmt = db.prepare(`
@@ -33,9 +33,9 @@ const SalesDbHelper = {
         const stmt = db.prepare(`SELECT * FROM sales`);
         return stmt.all();
     },
-    detete_sale : ((date, id)=>{
-        const stmt = db.prepare(`DELETE FROM sales WHERE date = ? AND id = ?`);
-        const info = stmt.run(date,id);
+    detete_sale : ((id)=>{
+        const stmt = db.prepare(`DELETE FROM sales WHERE id = ?`);
+        const info = stmt.run(id);
         return info;
     }
 )
