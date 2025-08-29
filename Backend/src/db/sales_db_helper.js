@@ -30,7 +30,7 @@ const SalesDbHelper = {
     },
     
     get_all_sales : ()=>{
-        const stmt = db.prepare(`SELECT * FROM sales`);
+        const stmt = db.prepare(`SELECT * FROM sales ORDER BY date DESC`);
         return stmt.all();
     },
     detete_sale : ((id)=>{

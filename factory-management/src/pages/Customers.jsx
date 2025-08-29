@@ -11,6 +11,7 @@ import {
 import { Modal, Form, Button } from "react-bootstrap";
 import axios from "axios";
 import ExpenseModal from "../components/ExpenseModal";
+import TransactionsModal from "../components/TransactionsModal";
 
 const Customers = () => {
   const [showAddCustomer, setShowAddCustomer] = useState(false);
@@ -33,17 +34,18 @@ const Customers = () => {
   const [credit, setCredit] = useState("");
   const [customerData, setCustomerData] = useState({ name: "", area: "" });
   const [showExpenseModal, setShowExpenseModal] = useState(false);
-  const [customerID,setCustomerID] = useState(null);
+  const [customerID, setCustomerID] = useState(null);
+  const [showTransactionModal,setShowTransactionModal] = useState(false)
 
   const getLocalDateString = () => {
-  const today = new Date();
-  const yyyy = today.getFullYear();
-  const mm = String(today.getMonth() + 1).padStart(2, '0'); // months start at 0
-  const dd = String(today.getDate()).padStart(2, '0');
-  return `${yyyy}-${mm}-${dd}`;
-};
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0'); // months start at 0
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
 
-const [date, setDate] = useState(getLocalDateString());
+  const [date, setDate] = useState(getLocalDateString());
 
 
   // Fetch areas, customers, items
@@ -99,12 +101,12 @@ const [date, setDate] = useState(getLocalDateString());
   }, [selectedArea]);
 
   useEffect(() => {
-  const total = saleAmounts.reduce(
-    (sum, item) => sum + Number(item.amount || 0), 
-    0
-  );
-  setTotalSale(total);
-}, [saleAmounts]);
+    const total = saleAmounts.reduce(
+      (sum, item) => sum + Number(item.amount || 0),
+      0
+    );
+    setTotalSale(total);
+  }, [saleAmounts]);
 
   const handleChange = (e) => {
     setCustomerData({ ...customerData, [e.target.name]: e.target.value });
@@ -169,19 +171,19 @@ const [date, setDate] = useState(getLocalDateString());
 
   const AddSale = async () => {
     try {
-     const numericSales = saleAmounts.map((i)=>({name:i.name, amount:Number(i.amount) || 0}));
+      const numericSales = saleAmounts.map((i) => ({ name: i.name, amount: Number(i.amount) || 0 }));
 
-       const payload = {
-      customerName,
-      customerArea,
-      description,
-      sales: numericSales,       
-      totalSale: Number(totalSale) || 0,
-      credit: Number(credit) || 0,
-      date,
-      type: "sale",
-      customerID
-    };
+      const payload = {
+        customerName,
+        customerArea,
+        description,
+        sales: numericSales,
+        totalSale: Number(totalSale) || 0,
+        credit: Number(credit) || 0,
+        date,
+        type: "sale",
+        customerID
+      };
       // console.log(payload);
       const res = await axios.post("http://localhost:3000/add_sale", payload, {
         withCredentials: true,
@@ -198,48 +200,63 @@ const [date, setDate] = useState(getLocalDateString());
     setCredit('');
   };
 
-  const handleSaleClose =  ()=>{
-     setAddSale(false);          // close modal
-  setDate(getLocalDateString());                // reset date
-  setDescription("");         // reset description
-  setSaleAmounts([]);         // reset sale amounts
-  setCredit(0);              // reset credit
-  setTotalSale(0);  
+  const handleSaleClose = () => {
+    setAddSale(false);          // close modal
+    setDate(getLocalDateString());                // reset date
+    setDescription("");         // reset description
+    setSaleAmounts([]);         // reset sale amounts
+    setCredit(0);              // reset credit
+    setTotalSale(0);
 
 
   }
-const handleSaleAmountChange = (name, value) => {
-  const numericval = Number(value);
-  setSaleAmounts((prev) => {
-    
-    const exists = prev.find(i => i.name === name);
+  const handleSaleAmountChange = (name, value) => {
+    const numericval = Number(value);
+    setSaleAmounts((prev) => {
 
-    if (exists) { 
-      return prev.map(i =>
-        i.name === name ? { ...i, amount: numericval } : i
-      );
-    } else {
-      return [...prev, { name, amount: numericval }];
-    }
-  });
-};
+      const exists = prev.find(i => i.name === name);
+
+      if (exists) {
+        return prev.map(i =>
+          i.name === name ? { ...i, amount: numericval } : i
+        );
+      } else {
+        return [...prev, { name, amount: numericval }];
+      }
+    });
+  };
 
 
-const handleClickAddExpense = async(name,area,id)=>{
-  setShowExpenseModal(true);
-  setCustomerName(name);
-  setCustomerArea(area);
-  setCustomerID(id)
-  
-}
-const hide = ()=>{
-  setShowExpenseModal(false);
-  setCustomerName('');
-  setCustomerArea('');
-  setDate(getLocalDateString());
-}
+  const handleClickAddExpense = async (name, area, id) => {
+    setShowExpenseModal(true);
+    setCustomerName(name);
+    setCustomerArea(area);
+    setCustomerID(id)
 
-const filteredCustomers = customers.filter(
+  }
+  const hide = () => {
+    setShowExpenseModal(false);
+    setCustomerName('');
+    setCustomerArea('');
+    setDate(getLocalDateString());
+  }
+
+  const handleShowDetails = (name,area,id)=>{
+    setCustomerName(name);
+    setCustomerArea(area);
+    setCustomerID(id);
+    setShowTransactionModal(true);
+  }
+
+  const handleHideDetails = ()=>{
+    setShowTransactionModal(false);
+    setCustomerName('');
+    setCustomerArea('');
+    setCustomerID(null);
+
+  }
+
+  const filteredCustomers = customers.filter(
     (c) =>
       c.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       c.area.toLowerCase().includes(searchTerm.toLowerCase())
@@ -300,12 +317,12 @@ const filteredCustomers = customers.filter(
               className="m-2"
               style={{ width: "70%", maxHeight: "70vh", overflowY: "auto" }}
             >
-              <table className="table table-secondary rounded shadow table-striped">
+              <table className="table table-secondary rounded shadow table-striped ">
                 <thead className="bg-primary text-white">
                   <tr>
                     <td>Customer Name</td>
                     <td>Area</td>
-                    <td>Give/Take</td>
+                    <td>Balance</td>
                     <td>+Sale</td>
                     <td>+Expense</td>
                     <td>Details</td>
@@ -317,17 +334,26 @@ const filteredCustomers = customers.filter(
                     <tr key={i}>
                       <td>{c.name}</td>
                       <td>{c.area}</td>
-                      <td>{c.money}</td>
+                      <td style={{
+                        // backgroundColor:
+                        //   c.money > 0
+                        //     ? "rgba(25, 135, 84, 0.3)"   // Bootstrap green, 30% opacity
+                        //     : c.money < 0
+                        //       ? "rgba(220, 53, 69, 0.3)"   // Bootstrap red, 30% opacity
+                        //       : "transparent",
+                        color: c.money > 0 ? "#198754" : c.money < 0 ? "#dc3545" : "inherit",
+                        fontWeight: "bold",
+                      }}>{c.money}</td>
                       <td
                         className="text-center"
-                        onClick={() => handleClickAddSale(c.name, c.area,c.id)}
+                        onClick={() => handleClickAddSale(c.name, c.area, c.id)}
                       >
                         <CartPlusFill />
                       </td>
                       <td className="text-center" onClick={() => handleClickAddExpense(c.name, c.area, c.id)}>
                         <CashStack />
                       </td>
-                      <td className="text-center">
+                      <td className="text-center" onClick={()=>handleShowDetails(c.name,c.area,c.id)} >
                         <EyeFill />
                       </td>
                       <td onClick={() => ShowDeleteCustomer(c.name, c.area)}>
@@ -353,7 +379,7 @@ const filteredCustomers = customers.filter(
       </div>
 
       {/* Add Customer Modal */}
-      <Modal show={showAddCustomer} onHide={() =>{ setShowAddCustomer(false)}} centered>
+      <Modal show={showAddCustomer} onHide={() => { setShowAddCustomer(false) }} centered>
         <Modal.Header closeButton>
           <Modal.Title>Add New Customer</Modal.Title>
         </Modal.Header>
@@ -508,8 +534,10 @@ const filteredCustomers = customers.filter(
         </Modal.Footer>
       </Modal>
 
-      <ExpenseModal show={showExpenseModal} 
-      hide={hide} customerID = {customerID} customerName={customerName} customerArea={customerArea} date={date} items = {items}/>
+      <ExpenseModal show={showExpenseModal}
+        hide={hide} customerID={customerID} customerName={customerName} customerArea={customerArea} date={date} items={items} />
+
+      <TransactionsModal show={showTransactionModal} hide={handleHideDetails} customerID={customerID} customerName={customerName} customerArea={customerArea}/>  
     </>
   );
 };

@@ -4,7 +4,7 @@ const Sales_ExpensesDbHelper = {
   addSaleExpense: async (sales, date,type,ES_id) => {
     try {
       const stmt = db.prepare(
-        `INSERT INTO items_sales_expenses (date, item, type, amount,ES_id) VALUES (?, ?, ?, ?, ?)`
+        `INSERT INTO items_sales_expenses (date, item, type, amount, ES_id) VALUES (?, ?, ?, ?, ?)`
       );
 
       sales.map((item)=> {

@@ -21,7 +21,7 @@ db.prepare(`CREATE TABLE IF NOT EXISTS items (
     name TEXT NOT NULL
   )`).run();
 
-// db.prepare(`DROP TABLE IF EXISTS sales`).run();
+db.prepare(`DROP TABLE IF EXISTS transactions`).run();
 
 db.prepare(`
   CREATE TABLE IF NOT EXISTS sales (
@@ -74,7 +74,8 @@ db.prepare(`
     amount INTEGER NOT NULL,
     transactiontype TEXT NOT NULL,
     debit INTEGER NOT NULL DEFAULT 0,
-    credit INTEGER NOT NULL DEFAULT 0)
+    credit INTEGER NOT NULL DEFAULT 0,
+    transactionamount INTEGER )
     `).run()
 
 console.log(`Database initialized at ${dbPath}`);

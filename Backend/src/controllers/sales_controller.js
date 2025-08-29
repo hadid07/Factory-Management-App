@@ -25,7 +25,7 @@ module.exports.addSale = async(req,res)=>{
             const customerAmount = customer.money;
             const newAmount = customerAmount + (totalSale - credit);
             const updateCustomer = await customerDbHelper.update_give_take(customerID,customerName,customerArea,newAmount);
-            const transaction = await transactionDbHelper.add_transaction(date,customerName,customerArea,customerID,description,newAmount,credit,0,'sale', ES_id);
+            const transaction = await transactionDbHelper.add_transaction(date,customerName,customerArea,customerID,description,newAmount,credit,0,'sale', ES_id,totalSale);
         }
         // console.log('customer :', customer)
         res.json({

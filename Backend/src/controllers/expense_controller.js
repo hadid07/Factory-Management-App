@@ -24,11 +24,11 @@ module.exports.add_expense = async(req,res)=>{
         // console.log(customerid)
         // console.log("customer :", customer)
         if(customer){
-            const transaction = await transactionDbHelper.add_transaction(date,customerName,customerArea,customerid,description,totalExpense,0,debit,'expense', ES_id);
             // const customer = await CustomerdbHelper.get_customer_by_details(customerID,customerName,customerArea);
             const customerAmount = customer.money;
             const RemainingAmount = totalExpense - debit;
             const newAmount = customerAmount - RemainingAmount;
+            const transaction = await transactionDbHelper.add_transaction(date,customerName,customerArea,customerid,description,newAmount,0,debit,'expense', ES_id,totalExpense);
             const updateCustomer = await CustomerdbHelper.update_give_take(customerid,customerName,customerArea,newAmount);
         
         }

@@ -1,10 +1,10 @@
 const db = require('../db/dbcon');
 
 const transactionsDBHelper = {
-    add_transaction : async(date,customerName,customerArea,customerID,description,Amount,credit,debit,transactiontype,ES_id )=>{
+    add_transaction : async(date,customerName,customerArea,customerID,description,Amount,credit,debit,transactiontype,ES_id,transactionamount )=>{
         try{
-            const stmt = db.prepare(`INSERT INTO transactions (date, customername, customerarea, customerID, description, amount, credit, debit, transactiontype, ES_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
-            const info = stmt.run(date,customerName,customerArea,customerID,description,Amount,credit,debit,transactiontype, ES_id);
+            const stmt = db.prepare(`INSERT INTO transactions (date, customername, customerarea, customerID, description, amount, credit, debit, transactiontype, ES_id,transactionamount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)`);
+            const info = stmt.run(date,customerName,customerArea,customerID,description,Amount,credit,debit,transactiontype, ES_id,transactionamount);
             return info;
         }catch(err){
             console.error("Error inserting transaction:", err);
@@ -30,6 +30,16 @@ const transactionsDBHelper = {
         }catch(err){
             console.error("Error deleting transaction:", err);
             return false;
+        }
+    },
+    get_transaction : async(customerID)=>{
+        try{
+            const stmt = db.prepare(`SELECT * FROM transactions WHERE customerID = ? ORDER BY date DESC`);
+            const transactions = stmt.all(customerID);
+            return transactions;
+        }catch(err){
+            console.error("Error fetching transactions:", err);
+            return [];
         }
     }
 }
