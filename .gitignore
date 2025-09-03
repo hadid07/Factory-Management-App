@@ -4,3 +4,4 @@ node_modules/
 factory-management/.env
 idea UI.txt/
 UI.txt/
+Backend/src/db/database.db

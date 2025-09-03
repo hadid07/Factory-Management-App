@@ -23,6 +23,13 @@ const Sales_ExpensesDbHelper = {
     const stmt = db.prepare(`DELETE FROM items_sales_expenses WHERE date = ? AND ES_id = ? AND type = ?`);
     const info = stmt.run(date, ES_id, type);
     return info;
+  },
+  getDBItemSE : ()=>{
+    const stmt = db.prepare(`
+      SELECT * FROM items_sales_expenses WHERE strftime('%Y-%m', date) = strftime('%Y-%m', 'now')
+      `);
+    const itemsSE = stmt.all();
+    return itemsSE;
   }
 };
 

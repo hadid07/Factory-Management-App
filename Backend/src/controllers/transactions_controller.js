@@ -26,3 +26,15 @@ module.exports.getTransactions = async (req, res) => {
         })
     }
 }
+
+module.exports.getAllTransactions = async (req,res)=>{
+    try{
+        const transactions = await TransactionDBHelper.show_all_transactions();
+        res.json({
+            status:true,
+            transactions:transactions
+        })
+    }catch(err){
+
+    }
+}

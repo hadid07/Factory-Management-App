@@ -29,6 +29,12 @@ const ExpenseDbHelper = {
         const stmt = db.prepare(`DELETE FROM expenses WHERE date = ? AND id = ?`);
         const info = stmt.run(date,id );
         return info;
+    },
+    getDBExpenses : ()=>{
+        const stmt = db.prepare(`
+            SELECT * FROM expenses WHERE strftime('%Y-%m', date) = strftime('%Y-%m', 'now')`);
+            const expenses = stmt.all();
+            return expenses;
     }
 }
 

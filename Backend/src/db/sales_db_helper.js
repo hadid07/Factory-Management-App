@@ -38,7 +38,14 @@ const SalesDbHelper = {
         const info = stmt.run(id);
         return info;
     }
-)
+),
+getDBSales : ()=>{
+    const stmt = db.prepare(`
+        SELECT * FROM sales WHERE strftime('%Y-%m',date) = strftime('%Y-%m', 'now')
+        `);
+    const sales = stmt.all();
+    return sales;    
+}
 };
 
 module.exports = SalesDbHelper;

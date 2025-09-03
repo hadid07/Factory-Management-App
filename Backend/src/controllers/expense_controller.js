@@ -30,7 +30,8 @@ module.exports.add_expense = async(req,res)=>{
             const newAmount = customerAmount - RemainingAmount;
             const transaction = await transactionDbHelper.add_transaction(date,customerName,customerArea,customerid,description,newAmount,0,debit,'expense', ES_id,totalExpense);
             const updateCustomer = await CustomerdbHelper.update_give_take(customerid,customerName,customerArea,newAmount);
-        
+            
+         
         }
         if(item && item !==''){
             const type = 'expense';

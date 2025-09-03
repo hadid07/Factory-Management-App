@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import D_Card_Primary from '../components/D_Card_Primary';
@@ -17,6 +17,7 @@ import {
 } from 'chart.js';
 
 import { Bar, Pie } from 'react-chartjs-2';
+import axios from 'axios';
 
 // Register Chart.js components
 ChartJS.register(
@@ -30,13 +31,76 @@ ChartJS.register(
 );
 
 const Dashboard = () => {
+  const [totalSales,setTotalSales] = useState(0);
+  const [totalExpenses,setTotalExpenses] = useState(0);
+  const [totalCredit,setTotalCredit] = useState(0);
+  const [totalDebit,setTotalDebit] = useState(0);
+  const [itemSales,setItemSales] = useState([]);
+  const [itemExpenses,setItemExpenses] = useState(0);
+  const [otherExpenses,setOtherExpenses] = useState(0);
+  const [items,setItems] = useState([]);
+  const [itemLabels,setItemLabels] = useState([]);
+
+useEffect(() => {
+  const getData = async () => {
+    try {
+      const result = await axios.get('http://localhost:3000/get_dashboard_data', { withCredentials: true });
+      if (result.data.status) {
+        setTotalSales(result.data.totalSales);
+        setTotalExpenses(result.data.totalExpenses);
+        setTotalCredit(result.data.totalCredit);
+        setTotalDebit(result.data.totalDebit);
+        setItems(result.data.items);
+
+        const itemLabelsArr = [];
+        const itemSalesArr = [];
+        const itemExpensesArr = [];
+
+        const itemSE = result.data.itemSE;
+
+        result.data.items.forEach(item => {
+          itemLabelsArr.push(item.name);
+
+          const totalSale = itemSE
+            .filter(ise => ise.item === item.name && ise.type === 'sale')
+            .reduce((sum, ise) => sum + ise.amount, 0);
+          itemSalesArr.push(totalSale);
+
+          const totalExpense = itemSE
+            .filter(ise => ise.item === item.name && ise.type === 'expense')
+            .reduce((sum, ise) => sum + ise.amount, 0);
+          itemExpensesArr.push(totalExpense);
+        });
+
+        setItemLabels(itemLabelsArr);
+        setItemSales(itemSalesArr);
+
+        // Handle "other" and "item" expenses
+        let otherExpense = 0;
+        let itemExpense = 0;
+        result.data.expenses.forEach(expense => {
+          if(expense.expensetype === 'other') otherExpense += expense.expenseamount;
+          else if(expense.expensetype === 'item') itemExpense += expense.expenseamount;
+        });
+        setOtherExpenses(otherExpense);
+        setItemExpenses(itemExpense);
+
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  getData();
+}, []);
+
   // Bar Chart Data (Sales)
   const salesData = {
-    labels: ['Soap', 'Oil', 'Food Items', 'Surf'],
+    labels: itemLabels,
     datasets: [
       {
         label: 'Sales',
-        data: [120000, 180000, 25000, 30000],
+        data: itemSales,
         backgroundColor: [
           'rgba(49, 10, 105,0.7)',
           'rgba(109, 56, 113,0.7)',
@@ -76,11 +140,11 @@ const Dashboard = () => {
 
   // Pie Chart Data (Expenses)
   const expensesData = {
-    labels: ['Fuel Expense', 'Food Expense', 'Maintenance', 'Miscellaneous'],
+    labels: ['Item Expenses', 'Other/Factory Expenses'],
     datasets: [
       {
         label: 'Expenses',
-        data: [15000, 8000, 5000, 2000],
+        data: [itemExpenses, otherExpenses],
         backgroundColor: [
           'rgba(250, 115, 5, 0.7)',
           'rgba(187, 108, 67, 0.7)',
@@ -133,12 +197,12 @@ const Dashboard = () => {
             <D_Card_Primary
               color="rgba(25, 135, 84, 0.8)"
               name="Sales"
-              amount="100000"
+              amount={totalSales}
             />
             <D_Card_Primary
               color="rgba(220, 53, 69, 0.8)"
               name="Expenses"
-              amount="50000"
+              amount={totalExpenses}
             />
           </div>
 
@@ -167,14 +231,14 @@ const Dashboard = () => {
             <div className='border border-success rounded shadow p-2 d--flex'>
               <ArrowUpCircle size={30} className="text-success" />
               <span className='text-center text-success mx-1'>
-                Total Credit :
+                Total Credit : <span className='fw-bold' >{totalCredit} </span> 
                 </span>
             </div>
             {/* <div className="w-50  d-flex flex-row align-items-center justify-content-around p-3 mt-4 "> */}
             <div className='border border-success rounded shadow p-2 d--flex'>
               <ArrowDownCircle size={30} className="text-danger" />
               <span className='text-center text-danger mx-1'>
-                Total Debit :
+                Total Debit : <span className='fw-bold'> {totalDebit} </span> 
                 </span>
             </div>
           </div>
