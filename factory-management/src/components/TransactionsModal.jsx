@@ -3,28 +3,7 @@ import { Modal, Table } from 'react-bootstrap'
 import axios from 'axios';
 
 const TransactionsModal = (props) => {
-  const [transactions, setTransactions] = useState([]);
-  // const[customerID,setCustomerID] = useState(null);
-  useEffect(() => {
 
-    const getTransactions = async () => {
-      try {
-        const result = await axios.get('http://localhost:3000/get_transactions', {
-          params: { customerID: props.customerID },
-          withCredentials: true
-        });
-
-        if (result.data?.status) {
-          // console.log(result.data.message);
-          setTransactions(result.data.transactions);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-
-    }
-    getTransactions();
-  }, [props.customerID]);
   return (
     <div>
       <Modal show={props.show} onHide={props.hide} centered size='xl'>
@@ -50,7 +29,7 @@ const TransactionsModal = (props) => {
               </tr>
             </thead>
             <tbody>
-              {transactions.map((tran, index) => (
+              {props.transactions.map((tran, index) => (
                 <tr key={index}>
                   <td>{tran.date}</td>
                   <td>{tran.transactiontype}</td>

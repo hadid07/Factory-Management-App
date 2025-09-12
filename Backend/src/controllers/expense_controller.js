@@ -37,7 +37,7 @@ module.exports.add_expense = async(req,res)=>{
             const type = 'expense';
             const sales = [{name:item,amount:totalExpense}];
             const ItemSE = await itemSaleExpenseDbHelper.addSaleExpense(sales,date,type,ES_id);
-            console.log("item sale expense :", ItemSE)
+            // console.log("item sale expense :", ItemSE)
         }
         res.json({
             status:true,

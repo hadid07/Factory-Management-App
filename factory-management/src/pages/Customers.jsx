@@ -35,7 +35,8 @@ const Customers = () => {
   const [customerData, setCustomerData] = useState({ name: "", area: "" });
   const [showExpenseModal, setShowExpenseModal] = useState(false);
   const [customerID, setCustomerID] = useState(null);
-  const [showTransactionModal,setShowTransactionModal] = useState(false)
+  const [showTransactionModal, setShowTransactionModal] = useState(false);
+  const [transactions, setTransactions] = useState([]);
 
   const getLocalDateString = () => {
     const today = new Date();
@@ -241,14 +242,29 @@ const Customers = () => {
     setDate(getLocalDateString());
   }
 
-  const handleShowDetails = (name,area,id)=>{
+  const handleShowDetails = async(name, area, id) => {
+
+    try {
+      const result = await axios.get('http://localhost:3000/get_transactions', {
+        params: { customerID: id },
+        withCredentials: true
+      });
+
+      if (result.data?.status) {
+        console.log(result.data.message);
+        setTransactions(result.data.transactions);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+
     setCustomerName(name);
     setCustomerArea(area);
     setCustomerID(id);
     setShowTransactionModal(true);
   }
 
-  const handleHideDetails = ()=>{
+  const handleHideDetails = () => {
     setShowTransactionModal(false);
     setCustomerName('');
     setCustomerArea('');
@@ -353,7 +369,7 @@ const Customers = () => {
                       <td className="text-center" onClick={() => handleClickAddExpense(c.name, c.area, c.id)}>
                         <CashStack />
                       </td>
-                      <td className="text-center" onClick={()=>handleShowDetails(c.name,c.area,c.id)} >
+                      <td className="text-center" onClick={() => handleShowDetails(c.name, c.area, c.id)} >
                         <EyeFill />
                       </td>
                       <td onClick={() => ShowDeleteCustomer(c.name, c.area)}>
@@ -537,7 +553,7 @@ const Customers = () => {
       <ExpenseModal show={showExpenseModal}
         hide={hide} customerID={customerID} customerName={customerName} customerArea={customerArea} date={date} items={items} />
 
-      <TransactionsModal show={showTransactionModal} hide={handleHideDetails} customerID={customerID} customerName={customerName} customerArea={customerArea}/>  
+      <TransactionsModal show={showTransactionModal} hide={handleHideDetails} customerID={customerID} customerName={customerName} customerArea={customerArea} transactions = {transactions} />
     </>
   );
 };

@@ -1,4 +1,5 @@
 const TransactionDBHelper = require('../db/transactionDbHelper');
+const ItemSEDBHelper = require('../db/items_sales_expensesDbHelper');
 
 module.exports.getTransactions = async (req, res) => {
     try {
@@ -37,4 +38,12 @@ module.exports.getAllTransactions = async (req,res)=>{
     }catch(err){
 
     }
+}
+
+module.exports.getSE = async(req,res)=>{
+    const SE = ItemSEDBHelper.getDBItemSE();
+    res.json({
+        status:true,
+        itemSE:SE
+    })
 }

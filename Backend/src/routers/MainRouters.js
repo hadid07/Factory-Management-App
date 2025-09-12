@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-// const db = require('../db/dbcon');
 const areaController = require('../controllers/area_controller');
 const CustomerController = require('../controllers/customer_controller');
 const ItemController = require('../controllers/Item_controller');
@@ -8,6 +7,7 @@ const SalesController = require('../controllers/sales_controller');
 const ExpenseController = require('../controllers/expense_controller');
 const TransactionController = require('../controllers/transactions_controller');
 const DashboardController = require('../controllers/DashboardController');
+const ReportsController = require('../controllers/ReportsController');
 
 router.post('/add-area',areaController.Add_Area);
 router.get('/get_areas',areaController.get_areas);
@@ -27,4 +27,7 @@ router.post('/delete_expense',ExpenseController.delete_expense);
 router.get('/get_transactions',TransactionController.getTransactions);
 router.get('/get_dashboard_data',DashboardController.getDashboardData);
 router.get('/get_all_transactions',TransactionController.getAllTransactions);
+router.get('/getItemSE',TransactionController.getSE);
+router.get('/getDailyReports',ReportsController.dailyReports);
+
 module.exports = router;

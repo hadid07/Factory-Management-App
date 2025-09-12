@@ -79,8 +79,8 @@ useEffect(() => {
         let otherExpense = 0;
         let itemExpense = 0;
         result.data.expenses.forEach(expense => {
-          if(expense.expensetype === 'other') otherExpense += expense.expenseamount;
-          else if(expense.expensetype === 'item') itemExpense += expense.expenseamount;
+          if(expense.expensetype === 'other') otherExpense += Number(expense.expenseamount);
+          else if(expense.expensetype === 'item') itemExpense += Number(expense.expenseamount);
         });
         setOtherExpenses(otherExpense);
         setItemExpenses(itemExpense);

@@ -45,6 +45,21 @@ getDBSales : ()=>{
         `);
     const sales = stmt.all();
     return sales;    
+},
+    getSalesByDate : (date)=>{
+        const stmt = db.prepare(`
+            SELECT * FROM sales WHERE date = ? 
+            `);
+        const expenses = stmt.all(date);
+        return expenses
+    },
+    getSalesByMonth: (year, month) => {
+    const stmt = db.prepare(`
+        SELECT * FROM sales 
+        WHERE strftime('%Y', date) = ? 
+          AND strftime('%m', date) = ?
+    `);
+    return stmt.all(String(year), String(month).padStart(2, '0'));
 }
 };
 

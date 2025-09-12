@@ -35,7 +35,23 @@ const ExpenseDbHelper = {
             SELECT * FROM expenses WHERE strftime('%Y-%m', date) = strftime('%Y-%m', 'now')`);
             const expenses = stmt.all();
             return expenses;
-    }
+    },
+    getExpensesByDate : (date)=>{
+        const stmt = db.prepare(`
+            SELECT * FROM expenses WHERE date = ? 
+            `);
+        const expenses = stmt.all(date);
+        return expenses
+    },
+    getExpensesByMonth: (year, month) => {
+    const stmt = db.prepare(`
+        SELECT * FROM expenses 
+        WHERE strftime('%Y', date) = ? 
+          AND strftime('%m', date) = ?
+    `);
+    return stmt.all(String(year), String(month).padStart(2, '0'));
+}
+
 }
 
 module.exports = ExpenseDbHelper;

@@ -23,7 +23,7 @@ const transactionsDBHelper = {
                 transactionamount
             );
 
-
+            console.log('Transaction Added');
             return info;
         } catch (err) {
             console.error("Error inserting transaction:", err);
@@ -33,7 +33,7 @@ const transactionsDBHelper = {
     },
     show_all_transactions: async () => {
         try {
-            const stmt = db.prepare(`SELECT * FROM transactions ORDER BY date DESC`);
+            const stmt = db.prepare(`SELECT * FROM transactions`);
             const transactions = stmt.all();
             return transactions;
         } catch (err) {
@@ -45,6 +45,7 @@ const transactionsDBHelper = {
         try {
             const stmt = db.prepare(`DELETE FROM transactions WHERE date = ? AND transactiontype = ? AND ES_id = ?`);
             const info = stmt.run(date, transactiontype, ES_id);
+            console.log('Transaction Deleted');
             return info;
         } catch (err) {
             console.error("Error deleting transaction:", err);
@@ -54,7 +55,7 @@ const transactionsDBHelper = {
     get_transaction: async (customerID) => {
         try {
             const stmt = db.prepare(`SELECT * FROM transactions WHERE customerID = ? ORDER BY date DESC`);
-            const transactions = stmt.all(customerID);
+            const transactions = await stmt.all(customerID);
             return transactions;
         } catch (err) {
             console.error("Error fetching transactions:", err);

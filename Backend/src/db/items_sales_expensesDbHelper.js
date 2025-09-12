@@ -30,7 +30,22 @@ const Sales_ExpensesDbHelper = {
       `);
     const itemsSE = stmt.all();
     return itemsSE;
-  }
+  },
+    getSEByDate : (date)=>{
+        const stmt = db.prepare(`
+            SELECT * FROM items_sales_expenses WHERE date = ? 
+            `);
+        const expenses = stmt.all(date);
+        return expenses
+    },
+    getSEByMonth: (year, month) => {
+    const stmt = db.prepare(`
+        SELECT * FROM items_sales_expenses 
+        WHERE strftime('%Y', date) = ? 
+          AND strftime('%m', date) = ?
+    `);
+    return stmt.all(String(year), String(month).padStart(2, '0'));
+}
 };
 
 module.exports = Sales_ExpensesDbHelper;

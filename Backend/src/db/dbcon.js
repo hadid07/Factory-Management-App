@@ -21,7 +21,7 @@ db.prepare(`CREATE TABLE IF NOT EXISTS items (
     name TEXT NOT NULL
   )`).run();
 
-db.prepare(`DROP TABLE IF EXISTS transactions`).run();
+
 
 db.prepare(`
   CREATE TABLE IF NOT EXISTS sales (
