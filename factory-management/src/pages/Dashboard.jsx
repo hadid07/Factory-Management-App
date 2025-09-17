@@ -195,14 +195,16 @@ useEffect(() => {
           >
 
             <D_Card_Primary
-              color="rgba(25, 135, 84, 0.8)"
+              color="rgba(25, 135, 84, 0.1)"
               name="Sales"
               amount={totalSales}
+              border="rgb(25,135,84)"
             />
             <D_Card_Primary
-              color="rgba(220, 53, 69, 0.8)"
+              color="rgba(220, 53, 69, 0.1)"
               name="Expenses"
               amount={totalExpenses}
+               border="rgb(220,53,69)"
             />
           </div>
 

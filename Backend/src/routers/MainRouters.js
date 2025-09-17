@@ -29,5 +29,6 @@ router.get('/get_dashboard_data',DashboardController.getDashboardData);
 router.get('/get_all_transactions',TransactionController.getAllTransactions);
 router.get('/getItemSE',TransactionController.getSE);
 router.get('/getDailyReports',ReportsController.dailyReports);
+router.post('/generateMonthlyReport',ReportsController.monthlyReports);
 
 module.exports = router;

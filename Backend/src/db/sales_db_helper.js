@@ -1,7 +1,7 @@
 const db = require('../db/dbcon');
 
 const SalesDbHelper = {
-    add_sale: async (date, customername, customerarea, description,saleamount, credit, customerid) => {
+    add_sale: async (date, customername, customerarea, description, saleamount, credit, customerid) => {
         try {
             let stmt;
             let info;
@@ -12,7 +12,7 @@ const SalesDbHelper = {
                     INSERT INTO sales (date, customername, customerarea, description,saleamount, credit, customerid)
                     VALUES (?, ?, ?, ?, ?, ?, ?)
                 `);
-                info = stmt.run(date, customername, customerarea, description , saleamount, credit,customerid);
+                info = stmt.run(date, customername, customerarea, description, saleamount, credit, customerid);
             } else {
                 // If no date provided → let SQLite use default DATE('now')
                 stmt = db.prepare(`
@@ -28,25 +28,25 @@ const SalesDbHelper = {
             return { success: false, error: err.message };
         }
     },
-    
-    get_all_sales : ()=>{
+
+    get_all_sales: () => {
         const stmt = db.prepare(`SELECT * FROM sales ORDER BY date DESC`);
         return stmt.all();
     },
-    detete_sale : ((id)=>{
+    detete_sale: ((id) => {
         const stmt = db.prepare(`DELETE FROM sales WHERE id = ?`);
         const info = stmt.run(id);
         return info;
     }
-),
-getDBSales : ()=>{
-    const stmt = db.prepare(`
+    ),
+    getDBSales: () => {
+        const stmt = db.prepare(`
         SELECT * FROM sales WHERE strftime('%Y-%m',date) = strftime('%Y-%m', 'now')
         `);
-    const sales = stmt.all();
-    return sales;    
-},
-    getSalesByDate : (date)=>{
+        const sales = stmt.all();
+        return sales;
+    },
+    getSalesByDate: (date) => {
         const stmt = db.prepare(`
             SELECT * FROM sales WHERE date = ? 
             `);
@@ -54,13 +54,21 @@ getDBSales : ()=>{
         return expenses
     },
     getSalesByMonth: (year, month) => {
-    const stmt = db.prepare(`
+        const stmt = db.prepare(`
         SELECT * FROM sales 
         WHERE strftime('%Y', date) = ? 
           AND strftime('%m', date) = ?
     `);
-    return stmt.all(String(year), String(month).padStart(2, '0'));
-}
+        return stmt.all(String(year), String(month).padStart(2, '0'));
+    },
+    getSalesBetween: (fromDate, toDate) => {
+        const stmt = db.prepare(`
+        SELECT * FROM sales 
+        WHERE date BETWEEN ? AND ?
+        `);
+        return stmt.all(fromDate, toDate);
+
+    }
 };
 
 module.exports = SalesDbHelper;

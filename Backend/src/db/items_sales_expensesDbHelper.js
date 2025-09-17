@@ -45,7 +45,15 @@ const Sales_ExpensesDbHelper = {
           AND strftime('%m', date) = ?
     `);
     return stmt.all(String(year), String(month).padStart(2, '0'));
-}
+},
+    getItemSEBetween: (fromDate, toDate) => {
+        const stmt = db.prepare(`
+        SELECT * FROM items_sales_expenses 
+        WHERE date BETWEEN ? AND ?
+        `);
+        return stmt.all(fromDate, toDate);
+
+    }
 };
 
 module.exports = Sales_ExpensesDbHelper;

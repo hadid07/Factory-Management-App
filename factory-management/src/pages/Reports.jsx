@@ -5,6 +5,8 @@ import { Button, Table } from 'react-bootstrap'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import axios from 'axios'
+import { PlusCircle, PlusCircleFill } from 'react-bootstrap-icons'
+import ReportsModal from '../components/ReportsModal'
 
 const Reports = () => {
   const [dailymonthlyToggle, setDailyMonthlyToggle] = useState(true);
@@ -13,6 +15,7 @@ const Reports = () => {
   const [dailyDebit, setDailyDebit] = useState(0);
   const [dailyCredit, setDailyCredit] = useState(0);
   const [dailyItemsSE, setDailyItemsSE] = useState([]);
+  const [showReportModal,setShowReportModal] = useState(false);
 
   const today = new Date();
   const currentMonth = today.toISOString().slice(0, 7); 
@@ -45,7 +48,9 @@ const Reports = () => {
     getDailyReports()
   }, [dailydate])
 
-
+  const onHideReport = ()=>{
+    setShowReportModal(false)
+  }
 
   return (
     <>
@@ -111,11 +116,16 @@ const Reports = () => {
               </div>
             )
               : (
-                <div>
+                <div className='d-flex flex-column '>
                   <div className='d-flex justify-content-between align-items-center mx-5'>
-                    <h3 className='text-secondary my-3 text-center fw-bold'>Monthly Analysis</h3>
-                    <input className='mx-3 border-2 border-primary rounded p-2' type="month" name="dailydate" value={monthDate} onChange={(e) => setMonthDate(e.target.value)} id="" />
-                  </div>
+                    <h3 className='text-secondary my-3 text-center fw-bold'>Monthly Reports</h3>
+                     </div>
+                     <div className=' d-flex align-items-center justify-content-center mt-5' style={{width:'100%', height:'100%'}} >
+                      <div onClick={()=>setShowReportModal(true)} className=' p-2 d-flex align-items-center justify-content-center shadow btn btn-primary'>
+                      <PlusCircle size={25} color='white' />
+                      <div className='ms-2' >Generate Report</div>
+                      </div>
+                     </div>
                 </div>
               )
 
@@ -125,6 +135,7 @@ const Reports = () => {
         </div>
 
       </div>
+      <ReportsModal show = {showReportModal} hide = {onHideReport} />
     </>
   )
 }
