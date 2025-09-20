@@ -54,7 +54,7 @@ const transactionsDBHelper = {
     },
     get_transaction: async (customerID) => {
         try {
-            const stmt = db.prepare(`SELECT * FROM transactions WHERE customerID = ? ORDER BY date DESC`);
+            const stmt = db.prepare(`SELECT * FROM transactions WHERE customerID = ? ORDER BY id DESC`);
             const transactions = await stmt.all(customerID);
             return transactions;
         } catch (err) {

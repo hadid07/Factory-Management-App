@@ -12,6 +12,10 @@ const ItemdbHelper = {
     getItems: () => {
         const stmt = db.prepare(`SELECT * FROM items`);
         return stmt.all();
+    },
+    deleteItem: (id)=>{
+        const stmt = db.prepare(`DELETE FROM items WHERE id = ?`);
+        return stmt.run(id);
     }
 }
 module.exports = ItemdbHelper;

@@ -127,7 +127,7 @@ const Expenses = () => {
 
           <div>
             <Table className="table table-secondary table-striped shadow rounded mt-3">
-              <thead>
+              <thead className='fw-bold'>
                 <tr>
                   <td>Date</td>
                   <td>Customer Name</td>

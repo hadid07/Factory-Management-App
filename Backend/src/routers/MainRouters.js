@@ -30,5 +30,6 @@ router.get('/get_all_transactions',TransactionController.getAllTransactions);
 router.get('/getItemSE',TransactionController.getSE);
 router.get('/getDailyReports',ReportsController.dailyReports);
 router.post('/generateMonthlyReport',ReportsController.monthlyReports);
+router.post('/deleteItem',ItemController.deleteItem);
 
 module.exports = router;

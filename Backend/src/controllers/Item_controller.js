@@ -22,3 +22,19 @@ module.exports.getItems = async(req,res)=>{
         res.json({status:false,message:'could not get Items'})
     }
 }
+module.exports.deleteItem = async(req,res)=>{
+    try{
+        const {id} = req.body;
+        const res = await ItemdbHelper.deleteItem(id);
+        res.json({
+            status:true,
+            message:'Item Deleted Successfully'
+        })
+
+    }catch(err){
+        res.json({
+            status:false,
+            message:'Could not Delete Item'
+        })
+    }
+}

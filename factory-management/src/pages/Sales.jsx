@@ -198,7 +198,7 @@ const confirmDelete = async () => {
             <div className='mt-3' style={{ maxHeight: '70vh', overflowY: 'auto' }}>
 
               <table className='table table-secondary table-striped shadow rounded'>
-                <thead>
+                <thead className='fw-bold'>
                   <tr>
                     <td>Date</td>
                     <td>Name</td>
@@ -221,7 +221,7 @@ const confirmDelete = async () => {
                         <td>{sale.saleamount}</td>
                         <td>{sale.credit}</td>
                         <td>{sale.saleamount - sale.credit}</td>
-                        <td onClick={()=>handleDelSale(sale)}><TrashFill/></td>
+                        <td  onClick={()=>handleDelSale(sale)}><TrashFill className="text-danger cursor-pointer"/></td>
 
                       </tr>
                     ))

@@ -48,7 +48,12 @@ const Customers = () => {
 
   const [date, setDate] = useState(getLocalDateString());
 
-
+  const getCustomers = async () => {
+    const res = await axios.get("http://localhost:3000/get_all_customers", {
+      withCredentials: true,
+    });
+    setCustomers(res.data.customers);
+  };
   // Fetch areas, customers, items
   useEffect(() => {
     const getAreas = async () => {
@@ -58,12 +63,7 @@ const Customers = () => {
       setAreas(res.data.areas);
     };
 
-    const getCustomers = async () => {
-      const res = await axios.get("http://localhost:3000/get_all_customers", {
-        withCredentials: true,
-      });
-      setCustomers(res.data.customers);
-    };
+
 
     const getItems = async () => {
       const res = await axios.get("http://localhost:3000/get_items", {
@@ -190,6 +190,11 @@ const Customers = () => {
         withCredentials: true,
       });
       setMessage(res.data.message);
+      //refresh 
+      const result = await axios.get("http://localhost:3000/get_all_customers", {
+        withCredentials: true,
+      });
+      setCustomers(result.data.customers);
     } catch {
       setMessage("Error adding sale");
     }
@@ -242,7 +247,7 @@ const Customers = () => {
     setDate(getLocalDateString());
   }
 
-  const handleShowDetails = async(name, area, id) => {
+  const handleShowDetails = async (name, area, id) => {
 
     try {
       const result = await axios.get('http://localhost:3000/get_transactions', {
@@ -251,7 +256,7 @@ const Customers = () => {
       });
 
       if (result.data?.status) {
-        console.log(result.data.message);
+        // console.log(result.data.message);
         setTransactions(result.data.transactions);
       }
     } catch (err) {
@@ -334,7 +339,7 @@ const Customers = () => {
               style={{ width: "70%", maxHeight: "70vh", overflowY: "auto" }}
             >
               <table className="table table-secondary rounded shadow table-striped ">
-                <thead className="bg-primary text-white">
+                <thead className="bg-primary text-white fw-bold">
                   <tr>
                     <td>Customer Name</td>
                     <td>Area</td>
@@ -551,9 +556,9 @@ const Customers = () => {
       </Modal>
 
       <ExpenseModal show={showExpenseModal}
-        hide={hide} customerID={customerID} customerName={customerName} customerArea={customerArea} date={date} items={items} />
+        hide={hide} customerID={customerID} customerName={customerName} customerArea={customerArea} date={date} items={items} refreshCustomers={getCustomers} />
 
-      <TransactionsModal show={showTransactionModal} hide={handleHideDetails} customerID={customerID} customerName={customerName} customerArea={customerArea} transactions = {transactions} />
+      <TransactionsModal show={showTransactionModal} hide={handleHideDetails} customerID={customerID} customerName={customerName} customerArea={customerArea} transactions={transactions} />
     </>
   );
 };

@@ -51,6 +51,9 @@ const payload = {
           if(result.data.status){
             setMessage('Expense Added Successfully');
             setShowMessage(true);
+
+            props.refreshCustomers();
+
           }else{
             setMessage('Could not add Expense');
             setShowMessage(true);
