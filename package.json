@@ -1,20 +1,67 @@
 {
   "name": "factory-management",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Factory Management (Electron + Backend + SQLite)",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"nodemon Backend/src/app.js\" \"npm run dev --prefix factory-management\""
+    "dev": "concurrently \"nodemon Backend/src/app.js\" \"npm run dev --prefix factory-management\"",
+    "build:ui": "npm run build --prefix factory-management",
+    "postinstall": "electron-rebuild -f -w better-sqlite3",
+    "rebuild": "electron-rebuild -f -w better-sqlite3",
+    "dist": "npm run build:ui && npm run rebuild && electron-builder --win --x64"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "concurrently": "^9.2.0"
+    "concurrently": "^9.2.0",
+    "electron": "^30.5.1",
+    "electron-builder": "^26.0.12",
+    "electron-rebuild": "^3.2.9",
+    "nodemon": "^2.0.22"
   },
   "dependencies": {
+    "better-sqlite3": "^12.4.1",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
     "jspdf": "^3.0.2",
     "jspdf-autotable": "^5.0.2"
+  },  "build": {
+    "appId": "com.factory.management",
+    "productName": "Factory Management",
+    "asar": true,
+    "directories": {
+      "buildResources": "assets",
+      "output": "release"
+    },
+    "files": [
+      "main.js",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "Backend",
+        "to": "app.asar.unpacked/Backend"
+      },
+      {
+        "from": "factory-management/dist",
+        "to": "app.asar.unpacked/factory-management/dist"
+      },
+      {
+        "from": "Backend/src/db/database.db",
+        "to": "app.asar.unpacked/database.db"
+      },
+      {
+        "from": "node_modules",
+        "to": "app.asar.unpacked/node_modules",
+        "filter": ["**/*"]
+      }
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "assets/icon.ico",
+      "artifactName": "${productName}-Setup-${version}.${ext}"
+    }
   }
 }
